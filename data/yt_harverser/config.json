@@ -1,0 +1,19 @@
+{
+    "DATABASE_PATH": "../prepared_data",
+    "OUTPUT_FOLDER_PATH": "../prepared_data/sounds",
+    "CSV_FOLDER_PATH": "../prepared_data/csv/",
+    "SAVE_DOWNLOADED_FILE": "./dl_checkpoint",
+    "SOUND_FOLDER": "../prepared_data/sounds/",
+    "IMAGE_FOLDER": "../prepared_data/images_ready/",
+    "YOUTUBE_API_SERVICE_NAME": "youtube",
+    "YOUTUBE_API_VERSION": "v3",
+    "START_SAMPLE_IDX": 1,
+    "VIDEO_PER_PAGE": 25,
+    "MAX_VIDEO_COUNT": 50,
+    "RESULT_PER_QUERY": 100,
+    "MAX_VIDEO_DURATION": 3600,
+    "SAMPLE_AUDIO_DURATION": 10,
+    "DEFAULT_SAMPLE_RATE": 22050,
+    "DEFAULT_HOPE_LENGHT": 1024,
+    "EXT": ".wav"
+}

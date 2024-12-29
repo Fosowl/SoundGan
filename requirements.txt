@@ -1,0 +1,13 @@
+torch==2.2.0
+torch-complex==0.4.3
+torch-stoi==0.2.1
+torch-tb-profiler==0.4.1
+torchaudio==2.2.0
+torchmetrics==1.1.1
+torchsummary==1.5.1
+torchvision==0.17.0
+matplotlib==3.7.1
+matplotlib-inline==0.1.6
+numpy==1.23.5
+requests==2.31.0
+google-api-python-client==2.99.0

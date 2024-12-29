@@ -1,0 +1,19 @@
+{
+    "saveroot": "./save",
+    "dataroot": "../data/images_training",
+    "num_epochs": 300,
+    "original_image_size": [775, 308],
+    "image_size": [256, 256],
+    "workers": 1,
+    "batch_size": 32,
+    "nc": 3,
+    "nz": 100,
+    "ngf": 128,
+    "ndf": 128,
+    "lr_G": 0.00005,
+    "lr_D": 0.0001,
+    "beta1": 0.5,
+    "ngpu": 1,
+    "initial_noise_std": 0.2,
+    "noise_decay_rate": 0.997
+}

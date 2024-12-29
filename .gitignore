@@ -1,0 +1,12 @@
+.env
+*.png
+*.jpg
+*.wav
+*.mp3
+*.ogg
+*.jpeg
+*.pt
+*.pkl
+*.h5
+*.npy
+*.npz
