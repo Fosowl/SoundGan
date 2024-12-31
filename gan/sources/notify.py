@@ -8,13 +8,13 @@ from requests import HTTPError
 import base64
 from email.mime.text import MIMEText
 
-class notifier:
+class Notifier:
     """
     Class to send notifications to phone and email
     """
-    def __init__(self) -> None:
-        self.users_key = [None]
-        self.mail_address = [None]
+    def __init__(self, dev_notifier_keys = [], dev_mail_address = []) -> None:
+        self.users_key = dev_notifier_keys
+        self.mail_address = dev_mail_address
         self.mailing = True
         try:
             self.scopes = ["https://www.googleapis.com/auth/gmail.send"]
@@ -23,8 +23,6 @@ class notifier:
             self.service = build('gmail', 'v1', credentials=self.creds)
         except Exception as e:
             self.mailing = False
-            print('Error loading gmail credentials')
-            print(e)
 
     def send_email(self, subject: str, description: str) -> None:
         if self.mail_address[0] is None:
@@ -39,9 +37,8 @@ class notifier:
             try:
                 # Send the email using the Gmail API
                 response = self.service.users().messages().send(userId='me', body=create_message).execute()
-                print('Email sent successfully')
             except Exception as e:
-                print(f'Error sending email: {e}')
+                raise e
 
     def notify_phone(self, message: str, description: str) -> None:
         if self.users_key[0] is None:

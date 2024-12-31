@@ -19,6 +19,8 @@ class Config:
         self.ngpu = None
         self.initial_noise_std = None
         self.noise_decay_rate = None
+        self.dev_notifier_keys = None
+        self.dev_mail_address = None
 
     def load_config(self, config_path):
         with open(config_path, 'r') as f:
@@ -40,3 +42,5 @@ class Config:
         self.ngpu = config.get('ngpu')
         self.initial_noise_std = config.get('initial_noise_std')
         self.noise_decay_rate = config.get('noise_decay_rate')
+        self.dev_notifier_keys = config.get('dev_notifier_keys')
+        self.dev_mail_address = config.get('dev_mail_address')

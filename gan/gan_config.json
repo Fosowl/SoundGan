@@ -15,5 +15,7 @@
     "beta1": 0.5,
     "ngpu": 1,
     "initial_noise_std": 0.2,
-    "noise_decay_rate": 0.997
+    "noise_decay_rate": 0.997,
+    "dev_notifier_keys": [],
+    "dev_mail_address": []
 }

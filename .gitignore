@@ -1,12 +1,80 @@
-.env
-*.png
-*.jpg
+# Byte-compiled Python files
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# Virtual environment
+env/
+venv/
+.venv/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Logs
+*.log
+*.out
+*.err
+
+# System files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# MLflow files
+mlruns/
+*.mlmodel
+params.yaml
+metrics.yaml
+gan/mlruns/**/*.pth
+gan/mlruns/**/*.json
+gan/mlflow.db
+
+# PyTorch models
+*.pt
+*.pth
+
+# sound files
 *.wav
 *.mp3
-*.ogg
+
+# image files
+*.jpg
 *.jpeg
-*.pt
-*.pkl
+*.png
+*.gif
+
+# Data and cache
+*.csv
+*.tsv
+*.data
 *.h5
-*.npy
 *.npz
+*.npy
+*.pkl
+
+
+# Temporary files and folders
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# IDE settings
+.vscode/
+.idea/
+
+# Test coverage
+htmlcov/
+.coverage
+*.cover
+coverage.xml
+.cache
+
+# Build artifacts
+*.egg
+*.egg-info/
+dist/
+build/
+*.wheel

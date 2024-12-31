@@ -11,11 +11,15 @@ import torch.utils.data
 import torchvision.utils as vutils
 import torchvision.datasets as datasets
 import torchvision.transforms as transforms
+import mlflow
 
 from sources.generator import Generator
 from sources.discriminator import Discriminator
 from sources.plotting import plot_loss, plot_real_fake
-from sources.notify import notifier
+from sources.notify import Notifier
+
+mlflow.set_tracking_uri(uri="sqlite:///mlflow.db")
+mlflow.set_experiment("GAN Training")
 
 seed = 657587
 random.seed(seed)
@@ -64,8 +68,7 @@ def gradient_penalty(Dnet, real_samples, fake_samples, device) -> torch.Tensor:
     penalty = ((gradients.norm(2, dim=1) - 1) ** 2).mean()
     return penalty
 
-def training(device, config):
-    notifier = notifier()
+def prepare_data(config):
     dataset = datasets.ImageFolder(root=config.dataroot,
                                    transform=transforms.Compose([
                                            transforms.Resize(config.image_size),
@@ -74,30 +77,32 @@ def training(device, config):
                                            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
                                    ]))
     dataloader = torch.utils.data.DataLoader(dataset, batch_size=config.batch_size, shuffle=True, num_workers=config.workers)
-    real_batch = next(iter(dataloader))
+    return dataloader
+
+def setup_generator(config, device):
     # generator init
     netG = Generator(config).to(device)
     if (device.type == 'cuda') and (config.ngpu > 1):
         netG = nn.DataParallel(netG, list(range(config.ngpu)))
     print(netG)
+    return netG
+
+def setup_discriminator(config, device):
     # discriminator init
     netD = Discriminator(config).to(device)
     if (device.type == 'cuda') and (config.ngpu > 1):
         netD = nn.DataParallel(netD, list(range(config.ngpu)))
     print(netD)
+    return netD
 
-    real_label = 1
-    # optimizer
-    criterion = nn.BCEWithLogitsLoss()
-    fixed_noise = torch.randn(64, config.nz, 1, 1, device=device)
-    optimizerD = optim.Adam(netD.parameters(), lr=config.lr_D, betas=(config.beta1, 0.999))
-    optimizerG = optim.Adam(netG.parameters(), lr=config.lr_G, betas=(config.beta1, 0.999))
-
+def training_loop(netD, netG, optimizerD, optimizerG, dataloader, device, config):
     img_list = []
     G_losses = []
     D_losses = []
     iters = 0
+    fixed_noise = torch.randn(64, config.nz, 1, 1, device=device)
     current_noise_std = config.initial_noise_std
+    real_label = 1
     print("start training...")
     for epoch in range(config.num_epochs):
         for i, data in enumerate(dataloader, 0):
@@ -154,6 +159,9 @@ def training(device, config):
             # Save Losses for plotting later
             G_losses.append(lossG.item())
             D_losses.append(lossD.item())
+
+            mlflow.log_metric("Loss_G", lossG.item(), epoch)
+            mlflow.log_metric("Loss_D", lossD.item(), epoch)
             if (iters % 500 == 0) or ((epoch == config.num_epochs-1) and (i == len(dataloader)-1)):
                 with torch.no_grad():
                     fakes = netG(fixed_noise).detach().cpu()
@@ -164,12 +172,27 @@ def training(device, config):
         if epoch > 0:
             os.remove(f"{config.saveroot}/checkpoints/checkpoint_D_{epoch-1}.pt")
             os.remove(f"{config.saveroot}/checkpoints/checkpoint_G_{epoch-1}.pt")
-
     torch.save(netD, f"{config.saveroot}/model_D.pt")
     torch.save(netG, f"{config.saveroot}/model_G.pt")
+    return img_list, G_losses, D_losses
+
+def training(device, config):
+    notifier = Notifier(config.dev_notifier_keys, config.dev_mail_address)
+    # data
+    dataloader = prepare_data(config)
+    # model
+    netG = setup_generator(config, device)
+    netD = setup_discriminator(config, device)
+    # optimizer
+    optimizerD = optim.Adam(netD.parameters(), lr=config.lr_D, betas=(config.beta1, 0.999))
+    optimizerG = optim.Adam(netG.parameters(), lr=config.lr_G, betas=(config.beta1, 0.999))
+
+    mlflow.log_params(config.__dict__)
+    with mlflow.start_run(nested=True):
+        img_list, G_losses, D_losses = training_loop(netD, netG, optimizerD, optimizerG, dataloader, device, config)
 
     real_batch = next(iter(dataloader))
     plot_loss(G_losses, D_losses)
     plot_real_fake(real_batch, img_list, device)
 
-    notifier.notify_phone("GAN training done", f"Loss_G: {lossG.item()} Loss_D: {lossD.item()}")
+    notifier.notify_phone("GAN training done", f"Loss_G: {G_losses[-1].item()} Loss_D: {D_losses[-1].item()}")

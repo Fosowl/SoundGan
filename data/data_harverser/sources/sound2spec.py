@@ -34,25 +34,20 @@ class audio:
 def sound_file_to_spectrogram(full_path, sub_target_folder, idx, name):
         if os.stat(full_path).st_size == 0:
             return
-        print("Loading sound : ", full_path)
         sample = audio(full_path)
         img_name = f"sound_{idx}"
         path = sub_target_folder + "/" + img_name
-        print(f"writing {path}")
         sample.write_disk_spectrogram(path)
 
 def make_spectral_dataset(sub_input_folder: str,
                           sub_target_folder: str,
                           max_samples_count: int, config: dict) -> None:
-    print("Checking folder : ", sub_input_folder)
     files = os.listdir(sub_input_folder)
     idx = 0
     for f in files:
         if idx > max_samples_count:
-            print("Reached maximum samples count of : ", max_samples_count)
             break
         if f.endswith('.wav') != True or len(f.split('.')) > 2:
-            print(f"Skipping file : {f}")
             continue
         full_path = os.path.join(sub_input_folder, f)
         with wave.open(full_path, 'rb') as audio_file:
@@ -64,10 +59,9 @@ def make_spectral_dataset(sub_input_folder: str,
 def create_folder_if_not_exists(folder_path):
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
-        print(f"Folder {folder_path} created.")
 
 def sound2spec(config, class_name, max_count=1000):
     in_path = config["SOUND_FOLDER"] + class_name
     out_path = config["IMAGE_FOLDER"] + class_name
     create_folder_if_not_exists(out_path)
-    make_spectral_dataset(in_path, out_path, max_count)
+    make_spectral_dataset(in_path, out_path, max_count, config)
