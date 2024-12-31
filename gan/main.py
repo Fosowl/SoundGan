@@ -16,7 +16,7 @@ def main():
     config.load_config('gan_config.json')
     device = torch.device("cuda:0" if torch.cuda.is_available() else "mps")
     if args.inference:
-        inference(device, config)
+        inference(device, config, "output.wav")
     elif args.training:
         training(device, config)
     else:
