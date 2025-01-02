@@ -153,7 +153,7 @@ def check_donwloaded(url, downloaded):
     return False
 
 def downloader(config, class_name):
-    path_folder = config["OUTPUT_FOLDER_PATH"] + '/' + class_name
+    path_folder = config["SOUND_FOLDER"] + '/' + class_name
     path_csv = config["CSV_FOLDER_PATH"] + '/' + class_name + ".csv"
     try:
         dat = pd.read_csv(path_csv)

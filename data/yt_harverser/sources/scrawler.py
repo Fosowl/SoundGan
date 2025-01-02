@@ -164,7 +164,7 @@ def already_saved(x, choices):
 # do iterative youtube search on youtube and choose videos
 def youtube_search(query, csv_file, config, dev_key):
     ytsesh = build(config["YOUTUBE_API_SERVICE_NAME"], config["YOUTUBE_API_VERSION"],
-      developerKey=dev_key])
+      developerKey=dev_key)
     total_count = 0
     total_estimate = len(search_queries) * 4 * config["RESULT_PER_QUERY"]
     choices = []

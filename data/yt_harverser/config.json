@@ -1,10 +1,9 @@
 {
     "DATABASE_PATH": "../prepared_data",
-    "OUTPUT_FOLDER_PATH": "../prepared_data/sounds",
     "CSV_FOLDER_PATH": "../prepared_data/csv/",
-    "SAVE_DOWNLOADED_FILE": "./dl_checkpoint",
     "SOUND_FOLDER": "../prepared_data/sounds/",
-    "IMAGE_FOLDER": "../prepared_data/images_ready/",
+    "IMAGE_FOLDER": "../prepared_data/images/",
+    "SAVE_DOWNLOADED_FILE": "./dl_checkpoint",
     "YOUTUBE_API_SERVICE_NAME": "youtube",
     "YOUTUBE_API_VERSION": "v3",
     "START_SAMPLE_IDX": 1,

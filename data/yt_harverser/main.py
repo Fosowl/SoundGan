@@ -7,7 +7,9 @@ from sources.scrawler import scrawler
 from sources.sound2spec import sound2spec
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--mode', help='mode to run', required=True)
+parser.add_argument('--scrawl', help='Run in youtube scrawling', required=False)
+parser.add_argument('--download', help='Run youtube download', required=False)
+parser.add_argument('--sound2spec', help='Convert sound to spectrogram ', required=False)
 
 args = parser.parse_args()
 
@@ -32,12 +34,12 @@ def load_config(path):
     
 def main():
     config = load_config('config.json')
-    if args.mode == 'download':
-        downloader(config, "bird")
-    elif args.mode == 'scrawl':
-        scrawler(config, "bird")
-    elif args.mode == 'sound2spec':
-        sound2spec(config, "bird")
+    if args.download:
+        downloader(config, args.download)
+    elif args.scrawl:
+        scrawler(config, args.scrawl)
+    elif args.sound2spec:
+        sound2spec(config, args.sound2spec)
     else:
         print("Please specify a mode to run.")
 

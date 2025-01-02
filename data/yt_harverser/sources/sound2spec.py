@@ -70,4 +70,4 @@ def sound2spec(config, class_name, max_count=1000):
     in_path = config["SOUND_FOLDER"] + class_name
     out_path = config["IMAGE_FOLDER"] + class_name
     create_folder_if_not_exists(out_path)
-    make_spectral_dataset(in_path, out_path, max_count)
+    make_spectral_dataset(in_path, out_path, max_count, config)
