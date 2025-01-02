@@ -30,8 +30,8 @@ jobs:
       # Step 4: Run the data harvester
       - name: Run Data Harvester
         run: |
-          chmod +x data/yt_harverser/data_pipeline.sh
-          ./data/yt_harverser/data_pipeline.sh
+          chmod +x data/data_harverser/data_pipeline.sh
+          ./data/data_harverser/data_pipeline.sh
 
       # Step 5: Prepare training data
       - name: Move Data
