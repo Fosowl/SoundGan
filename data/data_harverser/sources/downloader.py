@@ -159,7 +159,7 @@ def check_donwloaded(url: str, downloaded: list) -> bool:
 
 def downloader(config: dict, class_name: str) -> None:
     path_csv = Path(config["CSV_FOLDER_PATH"]) / f"{class_name}.csv"
-    output_folder = Path(config["OUTPUT_FOLDER_PATH"]) / class_name
+    output_folder = Path(config["SOUND_FOLDER"]) / class_name
     output_folder.mkdir(parents=True, exist_ok=True)
     try:
         dat = pd.read_csv(path_csv)

@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  python-service:
+    build:
+      context: ./gan
+      dockerfile: Dockerfile
+    ports:
+      - "5050:5050"
+
+  go-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - python-service

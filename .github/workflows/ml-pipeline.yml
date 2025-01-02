@@ -1,0 +1,44 @@
+name: ML Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  ml-pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Python environment
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.8"
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Step 4: Run the data harvester
+      - name: Run Data Harvester
+        run: |
+          chmod +x data/yt_harverser/data_pipeline.sh
+          ./data/yt_harverser/data_pipeline.sh
+
+      # Step 5: Prepare training data
+      - name: Move Data
+        run: |
+          mkdir -p data/images_training
+          cp -r data/prepared_data/images/* data/images_training/
+
+      # Step 6: Train the GAN model
+      - name: Train GAN
+        run: |
+          python3 gan.py --training
