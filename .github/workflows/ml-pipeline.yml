@@ -1,6 +1,12 @@
 name: ML Pipeline
 
 on:
+  workflow_dispatch:
+    inputs:
+      class_name:
+        description: "Class to download (e.g., bird, guitar, etc.)"
+        required: true
+        default: "bird"
   push:
     branches:
       - main
@@ -35,7 +41,7 @@ jobs:
       - name: Run Data Harvester
         run: |
           chmod +x data/data_harverser/data_pipeline.sh
-          ./data/data_harverser/data_pipeline.sh
+          ./data/data_harverser/data_pipeline.sh "${{ inputs.class_name }}"
 
       # Step 5: Prepare training data
       - name: Move Data
