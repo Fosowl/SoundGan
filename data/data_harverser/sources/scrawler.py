@@ -15,12 +15,6 @@ logging.basicConfig(
 MIN_DURATION = 60
 MAX_DURATION = 1800
 
-search_queries = {
-    "bird": {
-        "english": ["bird sound", "bird singing", "bird chirping"],
-    }
-}
-
 # Convert YouTube duration to seconds
 def convert_youtube_duration(duration):
     pattern = re.compile(r'^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$')
@@ -63,8 +57,8 @@ def llm_check_title(title, query):
     return result
 
 # Choose videos from search results
-def choose_video(youtube, result, language, count, total, class_name):
-    logging.info(f"Choosing videos for class: {class_name}, language: {language}")
+def choose_video(youtube, result, count, total, class_name):
+    logging.info(f"Choosing videos for class: {class_name}")
     chosen = []
     for item in result['items']:
         count += 1
@@ -94,8 +88,8 @@ def choose_video(youtube, result, language, count, total, class_name):
     return chosen, count
 
 # Get YouTube search results for a query
-def get_youtube_results(youtube, query, language, max_result, class_name, config):
-    logging.info(f"Fetching YouTube results for query: {query}, language: {language}")
+def get_youtube_results(youtube, query, max_result, class_name, config):
+    logging.info(f"Fetching YouTube results for query: {query}")
     next_page_token = None
     all_results = []
     count = 0
@@ -110,7 +104,7 @@ def get_youtube_results(youtube, query, language, max_result, class_name, config
         ).execute()
 
         logging.info(f"SEARCH: << {query} >> - got {len(result['items'])} results.")
-        choices, count = choose_video(youtube, result, language, count, max_result, class_name)
+        choices, count = choose_video(youtube, result, count, max_result, class_name)
         all_results.extend(choices)
         next_page_token = result.get('nextPageToken')
 
@@ -171,22 +165,22 @@ def youtube_search(query, csv_file, config, dev_key):
     total_count = 0
     choices = []
     create_folder_if_not_exists(config["CSV_FOLDER_PATH"])
+    search_queries = [f"{query} sound", f"{query} noise", f"{query} clip", f"{query} recording", f"{query} ambience"]
 
-    for language in search_queries[query]:
-        for search_term in search_queries[query][language]:
-            logging.info(f"Searching for {search_term}...")
+    for search_term in search_queries:
+        logging.info(f"Searching for {search_term}...")
 
-            results = get_youtube_results(youtube, search_term, language, total_count, query, config)
+        results = get_youtube_results(youtube, search_term, total_count, query, config)
 
-            for result in results:
-                if result['id']['kind'] == 'youtube#video' and not already_saved(result, choices):
-                    choices.append(result)
-                    logging.info(f"Video added: {result['snippet']['title']}")
-                total_count += 1
+        for result in results:
+            if result['id']['kind'] == 'youtube#video' and not already_saved(result, choices):
+                choices.append(result)
+                logging.info(f"Video added: {result['snippet']['title']}")
+            total_count += 1
 
-            save_choices(choices, csv_file)
-            if total_count >= config["MAX_VIDEO_COUNT"]:
-                break
+        save_choices(choices, csv_file)
+        if total_count >= config["MAX_VIDEO_COUNT"]:
+            break
 
     logging.info(f"Total analyzed: {total_count} videos. Total saved: {len(choices)} videos.")
 
