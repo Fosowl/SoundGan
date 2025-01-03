@@ -44,6 +44,10 @@ jobs:
       - name: Move Data
         run: |
           mkdir -p data/images_training
+          mkdir -p data/prepared_data/csv
+          mkdir -p data/prepared_data/images
+          mkdir -p data/prepared_data/sounds
+          touch data/prepared_data/csv/$1.csv
           cp -r data/prepared_data/images/* data/images_training/
 
       # Step 6: Train the GAN model
