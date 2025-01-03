@@ -7,9 +7,6 @@ on:
         description: "Class to download (e.g., bird, guitar, etc.)"
         required: true
         default: "bird"
-  push:
-    branches:
-      - main
 
 env:
   YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
