@@ -3,5 +3,5 @@ matplotlib-inline==0.1.6
 numpy==1.23.5
 requests==2.31.0
 google-api-python-client==2.99.0
-yt-dlp==2024.12.23
+yt-dlp
 setuptools
