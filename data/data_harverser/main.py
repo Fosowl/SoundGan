@@ -10,6 +10,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--scrawl', help='Run in youtube scrawling', required=False)
 parser.add_argument('--download', help='Run youtube download', required=False)
 parser.add_argument('--sound2spec', help='Convert sound to spectrogram ', required=False)
+parser.add_argument('--config', help='Config file path.', required=True)
 
 args = parser.parse_args()
 
@@ -33,7 +34,7 @@ def load_config(path):
     return config
     
 def main():
-    config = load_config('config.json')
+    config = load_config(args.config)
     if args.download:
         downloader(config, args.download)
     elif args.scrawl:

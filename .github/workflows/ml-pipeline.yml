@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+env:
+  YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
 jobs:
   ml-pipeline:
     runs-on: ubuntu-latest
@@ -43,3 +47,10 @@ jobs:
       - name: Train GAN
         run: |
           python3 gan.py --training
+
+      # Step 7: Save Training Artifacts
+      - name: Upload Model Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: trained-gan-model
+          path: gan/save/

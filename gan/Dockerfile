@@ -1,4 +1,4 @@
-FROM pytorch/pytorch:latest
+FROM nvidia/cuda:11.1-base
 
 COPY . .
 
