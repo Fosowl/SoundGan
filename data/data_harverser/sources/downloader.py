@@ -166,7 +166,7 @@ def downloader(config: dict, class_name: str) -> None:
         save_file = open("dl_checkpoint", 'a')
     except FileNotFoundError as e:
         raise FileNotFoundError(f"File {path_csv} not found")
-    downloaded = load_checkpoint_file(config["CHECKPOINT_FILE"])
+    downloaded = load_checkpoint_file(config["SAVE_DOWNLOADED_FILE"])
     count = 0
     for index, row in dat.iterrows():
         t = re.sub(r'[^a-zA-Z]', '', row["title"])
