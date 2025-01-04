@@ -84,8 +84,5 @@ docker-compose up --build
 ### Contributing
 Feel free to fork the repository and open a pull request for any enhancements or bug fixes!
 
-Inspired by the desire to explore GANs and MLOps principles.
-Built as a demo project to combine sound generation and automation.
-
 ### License
 This project is licensed under the MIT License. See the LICENSE file for details.
