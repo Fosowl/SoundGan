@@ -52,7 +52,8 @@ jobs:
       # Step 6: Train the GAN model
       - name: Train GAN
         run: |
-          python3 gan.py --training
+          chmod +x gan/start_training.sh
+          ./gan/start_training.sh
 
       # Step 7: Save Training Artifacts
       - name: Upload Model Artifacts
