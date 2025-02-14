@@ -48,8 +48,6 @@ Features
 ### 1. Clone the Repository
 
 ```
-bash
-Copy code
 git clone https://github.com/yourusername/sound-gan.git  
 cd sound-gan  
 ```
